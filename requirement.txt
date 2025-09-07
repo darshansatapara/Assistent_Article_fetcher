@@ -1,0 +1,5 @@
+feedparser
+requests
+psycopg2-binary
+pandas
+dotenv
