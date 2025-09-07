@@ -1,0 +1,29 @@
+name: Run News Pipeline
+
+on:
+  schedule:
+    - cron: "30 0 * * *" # 6:00 AM IST
+    - cron: "30 6 * * *" # 12:00 PM IST
+    - cron: "30 13 * * *" # 7:00 PM IST
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          GNEWS_API_KEY: ${{ secrets.GNEWS_API_KEY }}
+        run: python save_to_mongo.py

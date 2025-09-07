@@ -1,9 +1,9 @@
-
-
 import feedparser
 from datetime import datetime, timezone
-import os
 from dotenv import load_dotenv
+import requests
+import time
+from requests.exceptions import RequestException
 
 # --- Load env ---
 load_dotenv()
@@ -55,6 +55,33 @@ RSS_FEEDS = {
     ]
 }
 
+def fetch_single_feed(feed_url, timeout=20, retries=2, delay=3):
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/124.0.0.0 Safari/537.36"
+        )
+    }
+
+    for attempt in range(retries):
+        try:
+            resp = requests.get(feed_url, timeout=timeout, headers=headers, allow_redirects=True)
+            resp.raise_for_status()
+            return feedparser.parse(resp.text)
+        except RequestException as e:
+            print(f"⚠️ Error fetching {feed_url} (attempt {attempt+1}/{retries}): {e}")
+            time.sleep(delay)
+
+    # 🔄 fallback: let feedparser fetch directly if requests fails
+    try:
+        print(f"⏪ Falling back to direct feedparser for {feed_url}")
+        return feedparser.parse(feed_url)
+    except Exception as e:
+        print(f"❌ Final failure for {feed_url}: {e}")
+        return None
+
+
 
 def fetch_rss_news():
     news_list = []
@@ -70,8 +97,12 @@ def fetch_rss_news():
                 "error": None,
                 "timestamp": datetime.now(timezone.utc)
             }
+
             try:
-                feed = feedparser.parse(feed_url)
+                feed = fetch_single_feed(feed_url)
+                if not feed:
+                    raise Exception("All retries failed")
+
                 source = feed.feed.get("title", "Unknown Source")
                 count = 0
 

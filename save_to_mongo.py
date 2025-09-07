@@ -2,6 +2,7 @@ import os
 import json
 import hashlib
 from datetime import datetime, timezone
+import time
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
@@ -118,13 +119,10 @@ def dump_to_file(data, filename):
     print(f"📂 Dumped {filename} → {path}")
 
 # --- Save Logs ---
-def save_logs(logs: list, log_collection, name: str = None):
+def save_logs(logs: list, log_collection):
     if not logs:
         return
     log_collection.insert_many(logs)
-    print(f"📝 Saved {len(logs)} logs to {log_collection.name}")
-    if name:
-        dump_to_file(logs, f"{name}.json")
 
 
 # --- Indexes ---
@@ -140,31 +138,36 @@ def create_indexes():
 if __name__ == "__main__":
     print("📡 Fetching GNews...")
     gnews_data, gnews_logs = collect_news()
-    dump_to_file(gnews_data, "01_gnews_data.json")
+    # dump_to_file(gnews_data, "01_gnews_data.json")
 
     print("📡 Fetching RSS...")
-    rss_data, rss_logs = fetch_rss_news()
-    dump_to_file(rss_data, "02_rss_data.json")
+    for attempt in range(3):
+        rss_data, rss_logs = fetch_rss_news()
+        if rss_data:
+            break
+        print(f"⚠️ RSS attempt {attempt+1} failed, retrying...")
+        time.sleep(5)
+    # dump_to_file(rss_data, "02_rss_data.json")
 
     print("🔄 Combining...")
     combined_data = combine_news(gnews_data, rss_data)
-    dump_to_file(combined_data, "03_combined.json")
+    # dump_to_file(combined_data, "03_combined.json")
 
     print("⚡ Processing...")
     updated_articles, news_map = process_news_file(combined_data)
-    dump_to_file(updated_articles, "04_processed_articles.json")
-    dump_to_file(news_map, "05_newsmap.json")
+    # dump_to_file(updated_articles, "04_processed_articles.json")
+    # dump_to_file(news_map, "05_newsmap.json")
 
     print("💾 Saving Articles...")
     stats = save_articles(updated_articles)
-    dump_to_file(stats, "06_save_stats.json")
+    # dump_to_file(stats, "06_save_stats.json")
 
     print("📝 Saving news_map...")
     save_newsmap(news_map)
   
   
     print("📝 Saving Logs...")
-    save_logs(gnews_logs, gnews_logs_col, "07_gnews_logs")
-    save_logs(rss_logs, rss_logs_col, "08_rss_logs")
+    save_logs(gnews_logs, gnews_logs_col)
+    save_logs(rss_logs, rss_logs_col)
 
     print("🎯 Pipeline completed successfully!")

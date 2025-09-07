@@ -189,7 +189,7 @@ PRIMARY_COUNTRY = "in"
 GLOBAL_COUNTRIES = ["us", "jp"]
 
 IND_PER_REQUEST_RATIO = 0.8
-DAILY_MAX_REQUESTS = 2
+DAILY_MAX_REQUESTS = 10
 ARTICLES_PER_REQUEST = 10
 
 TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
