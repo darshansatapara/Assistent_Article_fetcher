@@ -2,7 +2,7 @@ name: Run News Pipeline
 
 on:
   schedule:
-    - cron: "30 7 * * *" # 01:00 PM IST
+    - cron: "37 7 * * *" # 01:00 PM IST
     - cron: "30 0 * * *" # 6:00 AM IST
     - cron: "30 6 * * *" # 12:00 PM IST
     - cron: "30 13 * * *" # 7:00 PM IST
