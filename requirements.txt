@@ -1,5 +1,4 @@
+pymongo
 feedparser
 requests
-psycopg2-binary
-pandas
-dotenv
+python-dotenv
