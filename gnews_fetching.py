@@ -183,7 +183,8 @@ load_dotenv()
 API_KEY = os.getenv("GNEWS_API_KEY")
 
 # Categories available in GNews
-CATEGORIES = [ "education", "general"]
+CATEGORIES = ["business", "technology", "politics", "entertainment",
+              "sports", "science", "health", "nature", "education", "general"]
 
 PRIMARY_COUNTRY = "in"
 GLOBAL_COUNTRIES = ["us", "jp"]
