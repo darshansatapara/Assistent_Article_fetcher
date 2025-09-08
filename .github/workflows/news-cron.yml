@@ -3,10 +3,9 @@ name: Run News Pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "45 7 * * *" # 01:00 PM IST
     - cron: "30 0 * * *" # 6:00 AM IST
     - cron: "30 6 * * *" # 12:00 PM IST
-    - cron: "30 13 * * *" # 7:00 PM IST
+    - cron: "00 13 * * *" # 7:00 PM IST
 
 jobs:
   run-script:
