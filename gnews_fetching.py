@@ -174,7 +174,7 @@
 
 import requests
 import math
-from datetime import datetime, timezone
+from datetime import datetime, time, timezone
 from dotenv import load_dotenv
 import os
 
@@ -290,11 +290,13 @@ def collect_news():
     for i in range(india_requests):
         cat = CATEGORIES[i % len(CATEGORIES)]
         all_news[cat].extend(fetch_category_news(cat, PRIMARY_COUNTRY, is_top=False, logs=logs))
+        time.sleep(1) 
 
     for i in range(global_requests):
         cat = CATEGORIES[i % len(CATEGORIES)]
         country = GLOBAL_COUNTRIES[i % len(GLOBAL_COUNTRIES)]
         all_news[cat].extend(fetch_category_news(cat, country, is_top=False, logs=logs))
+        time.sleep(1)
 
     return all_news, logs
 
