@@ -174,10 +174,10 @@
 
 import requests
 import math
-from datetime import datetime, time, timezone
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
-
+import time
 # --- Load env ---
 load_dotenv()
 API_KEY = os.getenv("GNEWS_API_KEY")
