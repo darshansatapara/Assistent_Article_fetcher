@@ -143,7 +143,7 @@ if __name__ == "__main__":
 
     print("📡 Fetching RSS...")
     for attempt in range(3):
-        rss_data, rss_logs = fetch_rss_news()clea
+        rss_data, rss_logs = fetch_rss_news()
         if rss_data:
             break
         print(f"⚠️ RSS attempt {attempt+1} failed, retrying...")
@@ -160,18 +160,18 @@ if __name__ == "__main__":
     # dump_to_file(news_map, "05_newsmap.json")
 
     print("💾 Saving Articles...")
-    # stats = save_articles(updated_articles)
+    stats = save_articles(updated_articles)
     # dump_to_file(stats, "06_save_stats.json")
 
     print("Saving Articles to Supabase...")
     save_articles_to_supabase(updated_articles)
 
-    # print("📝 Saving news_map to mongodb...")
-    # save_newsmap(news_map)
+    print("📝 Saving news_map to mongodb...")
+    save_newsmap(news_map)
   
   
-    # print("📝 Saving Logs...")
-    # save_logs(gnews_logs, gnews_logs_col)
-    # save_logs(rss_logs, rss_logs_col)
+    print("📝 Saving Logs...")
+    save_logs(gnews_logs, gnews_logs_col)
+    save_logs(rss_logs, rss_logs_col)
 
     print("🎯 Pipeline completed successfully!")
