@@ -27,4 +27,6 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           GNEWS_API_KEY: ${{ secrets.GNEWS_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
         run: python save_to_mongo.py
