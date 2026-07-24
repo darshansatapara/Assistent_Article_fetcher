@@ -163,8 +163,8 @@ if __name__ == "__main__":
     stats = save_articles(updated_articles)
     # dump_to_file(stats, "06_save_stats.json")
 
-    print("Saving Articles to Supabase...")
-    save_articles_to_supabase(updated_articles)
+    # print("Saving Articles to Supabase...")
+    # save_articles_to_supabase(updated_articles)
 
     print("📝 Saving news_map to mongodb...")
     save_newsmap(news_map)
